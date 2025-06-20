@@ -7,7 +7,7 @@ import NoteList from "../../components/NoteList/NoteList";
 import NoteModal from "../../components/NoteModal/NoteModal";
 import SearchBox from "../../components/SearchBox/SearchBox";
 import Pagination from "../../components/Pagination/Pagination";
-import css from "./App.module.css";
+// import css from "./App.module.css";
 import { useDebounce } from "use-debounce";
 
 const App = () => {
@@ -25,8 +25,8 @@ const App = () => {
   });
 
   return (
-    <div className={css.app}>
-      <header className={css.toolbar}>
+    <div>
+      <header>
         <SearchBox
           value={searchText}
           onChange={(value: string) => {
@@ -41,9 +41,7 @@ const App = () => {
             onPageChange={setPage}
           />
         )}
-        <button className={css.button} onClick={() => setIsModalOpen(true)}>
-          Create note +
-        </button>
+        <button onClick={() => setIsModalOpen(true)}>Create note +</button>
       </header>
 
       {isLoading && <p>Loading...</p>}
