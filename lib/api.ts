@@ -33,10 +33,11 @@ const axiosConfig = axios.create({
 });
 
 export const fetchNotes = async (
+  search: string = "",
   page: number = 1,
-  perPage: number = 12,
-  search: string = ""
-): Promise<PaginatedNotesResponse> => {
+  perPage: number = 12
+)
+: Promise<PaginatedNotesResponse> => {
   try {
     const response = await axiosConfig.get<PaginatedNotesResponse>("/notes", {
       params: {

@@ -9,3 +9,4 @@ export interface Note {
   content: string; 
   tag: NoteTag;
 }
+
