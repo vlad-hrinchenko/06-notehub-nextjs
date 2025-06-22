@@ -1,10 +1,6 @@
-import { fetchNotes } from "../lib/api";
-import NotesClient from "./notes/Notes.client";
 import css from "./page.module.css";
 
-export default async function NotesPage() {
-  const data = await fetchNotes();
-
+export default async function Home() {
   return (
     <main>
       <div className={css.container}>
@@ -20,7 +16,6 @@ export default async function NotesPage() {
           NoteHub offers a streamlined experience for anyone who values clarity
           and productivity.
         </p>
-        <NotesClient notes={data.notes} totalPages={data.totalPages} />;
       </div>
     </main>
   );

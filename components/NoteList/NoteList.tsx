@@ -1,3 +1,5 @@
+"use client";
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import type { Note } from "../../types/note";
@@ -21,18 +23,20 @@ const NoteList: React.FC<NoteListProps> = ({ notes }) => {
   return (
     <ul className={css.list}>
       {notes.map((note) => (
-        <li key={note.id} className={css.card}>
-          <Link href={`/notes/${note.id}`}>
+        <li key={note.id} className={css.listItem}>
+          <Link href={`/notes/${note.id}`} className={css.link}>
             <h3 className={css.title}>{note.title}</h3>
           </Link>
           <p className={css.content}>{note.content}</p>
-          <span className={css.tag}>{note.tag}</span>
-          <button
-            className={css.delete}
-            onClick={() => deleteMutation.mutate(note.id)}
-          >
-            Delete
-          </button>
+          <div className={css.footer}>
+            <span className={css.tag}>{note.tag}</span>
+            <button
+              className={css.button}
+              onClick={() => deleteMutation.mutate(note.id)}
+            >
+              Delete
+            </button>
+          </div>
         </li>
       ))}
     </ul>
