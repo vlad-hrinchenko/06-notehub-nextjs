@@ -4,11 +4,11 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchNoteById } from "../../../lib/api";
 import type { Note } from "../../../types/note";
 
-interface Props {
+interface NoteDetailsClientProps {
   noteId: number;
 }
 
-export default function NoteDetailsClient({ noteId }: Props) {
+export default function NoteDetailsClient({ noteId }: NoteDetailsClientProps) {
   const {
     data: note,
     isLoading,
