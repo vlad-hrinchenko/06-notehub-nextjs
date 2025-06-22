@@ -4,8 +4,14 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createNote } from "../../lib/api";
-import type { Note } from "../../types/note";
 import css from "./NoteForm.module.css";
+
+// 👇 типи — строго лише для створення нотатки
+interface NewNoteFormValues {
+  title: string;
+  content: string;
+  tag: "Todo" | "Work" | "Personal" | "Meeting" | "Shopping";
+}
 
 interface NoteFormProps {
   onClose: () => void;
@@ -22,7 +28,7 @@ const validationSchema = Yup.object().shape({
     .required("Tag is required"),
 });
 
-const initialValues: Omit<Note, "id"> = {
+const initialValues: NewNoteFormValues = {
   title: "",
   content: "",
   tag: "Todo",
@@ -40,7 +46,7 @@ const NoteForm = ({ onClose }: NoteFormProps) => {
   });
 
   return (
-    <Formik
+    <Formik<NewNoteFormValues>
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values, actions) => {

@@ -1,5 +1,5 @@
-// src/components/NoteList/NoteList.tsx
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Link from "next/link";
 import type { Note } from "../../types/note";
 import { deleteNote } from "../../lib/api";
 import css from "./NoteList.module.css";
@@ -22,8 +22,10 @@ const NoteList: React.FC<NoteListProps> = ({ notes }) => {
     <ul className={css.list}>
       {notes.map((note) => (
         <li key={note.id} className={css.card}>
-          <h3>{note.title}</h3>
-          <p>{note.content}</p>
+          <Link href={`/notes/${note.id}`}>
+            <h3 className={css.title}>{note.title}</h3>
+          </Link>
+          <p className={css.content}>{note.content}</p>
           <span className={css.tag}>{note.tag}</span>
           <button
             className={css.delete}

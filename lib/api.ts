@@ -1,6 +1,5 @@
 import axios from "axios";
-import { type Note } from "../types/note";
-import type { NoteTag } from "../types/note";
+import { type Note, type NoteTag } from "../types/note";
 
 export interface NewNoteContent {
   title: string;
@@ -21,7 +20,6 @@ export interface DeletedNoteInfo {
 }
 
 const BASE_URL = "https://notehub-public.goit.study/api";
-
 const TOKEN = process.env.NEXT_PUBLIC_NOTEHUB_T;
 
 const axiosConfig = axios.create({
@@ -36,65 +34,30 @@ export const fetchNotes = async (
   search: string = "",
   page: number = 1,
   perPage: number = 12
-)
-: Promise<PaginatedNotesResponse> => {
-  try {
-    const response = await axiosConfig.get<PaginatedNotesResponse>("/notes", {
-      params: {
-        page,
-        ...(search !== "" && { search: search }),
-        perPage,
-      },
-    });
+): Promise<PaginatedNotesResponse> => {
+  const response = await axiosConfig.get<PaginatedNotesResponse>("/notes", {
+    params: {
+      page,
+      perPage,
+      ...(search && { search }),
+    },
+  });
+  return response.data;
+};
 
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error("Error fetching notes:", error.message);
-      if (error.response) {
-        console.error("Response data:", error.response.data);
-        console.error("Response status:", error.response.status);
-      }
-    } else {
-      console.error("Unexpected error fetching notes:", error);
-    }
-    throw error;
-  }
+export const fetchNoteById = async (id: number): Promise<Note> => {
+  const response = await axiosConfig.get<Note>(`/notes/${id}`);
+  return response.data;
 };
 
 export const createNote = async (content: NewNoteContent): Promise<Note> => {
-  try {
-    const response = await axiosConfig.post<Note>("/notes", content);
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error("Error creating note:", error.message);
-      if (error.response) {
-        console.error("Response data:", error.response.data);
-        console.error("Response status:", error.response.status);
-      }
-    } else {
-      console.error("Unexpected error creating note:", error);
-    }
-    throw error;
-  }
+  const response = await axiosConfig.post<Note>("/notes", content);
+  return response.data;
 };
 
 export const deleteNote = async (id: number): Promise<DeletedNoteInfo> => {
-  try {
-    const response = await axiosConfig.delete<DeletedNoteInfo>(`/notes/${id}`);
-
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error(`Error deleting note with ID ${id}:`, error.message);
-      if (error.response) {
-        console.error("Response data:", error.response.data);
-        console.error("Response status:", error.response.status);
-      }
-    } else {
-      console.error("Unexpected error deleting note:", error);
-    }
-    throw error;
-  }
+  const response = await axiosConfig.delete<DeletedNoteInfo>(`/notes/${id}`);
+  return response.data;
 };
+
+
