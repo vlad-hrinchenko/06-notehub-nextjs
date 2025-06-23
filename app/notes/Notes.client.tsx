@@ -10,12 +10,20 @@ import SearchBox from "../../components/SearchBox/SearchBox";
 import { fetchNotes } from "../../lib/api";
 import { type Note } from "../../types/note";
 
-interface NotesClientProps {
+interface PaginatedNotesResponse {
   notes: Note[];
+  page: number;
   totalPages: number;
+  totalResults: number;
 }
 
-export default function NotesClient({ notes, totalPages }: NotesClientProps) {
+export default function NotesClient({
+  notes,
+  totalPages,
+}: {
+  notes: Note[];
+  totalPages: number;
+}) {
   const [page, setPage] = useState(1);
   const [searchText, setSearchText] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,7 +31,7 @@ export default function NotesClient({ notes, totalPages }: NotesClientProps) {
 
   const trimmedSearch = debouncedSearchText.trim();
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError } = useQuery<PaginatedNotesResponse>({
     queryKey: ["notes", trimmedSearch, page],
     queryFn: () => fetchNotes(trimmedSearch, page),
     placeholderData: keepPreviousData,
@@ -57,9 +65,7 @@ export default function NotesClient({ notes, totalPages }: NotesClientProps) {
 
       {isLoading && <p>Loading notes...</p>}
       {isError && <p>Error loading notes.</p>}
-
       {data?.notes && <NoteList notes={data.notes} />}
-
       {isModalOpen && <NoteModal onClose={() => setIsModalOpen(false)} />}
     </div>
   );

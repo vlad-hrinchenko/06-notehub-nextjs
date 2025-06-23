@@ -6,14 +6,16 @@ import {
   dehydrate,
 } from "@tanstack/react-query";
 
-interface PageProps {
-  params: {
-    id: string;
-  };
+interface NoteDetailsPageProps {
+  params: Promise<{ id: string }>;
 }
 
-export default async function NoteDetailsPage({ params }: PageProps) {
-  const noteId = Number(params.id);
+export default async function NoteDetailsPage({
+  params,
+}: NoteDetailsPageProps) {
+  const { id } = await params;
+  const noteId = Number(id);
+
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
