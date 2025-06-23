@@ -5,6 +5,12 @@ export interface Note {
   title: string;
   content: string;
   tag: NoteTag;
-  createdAt: string;   
-  updatedAt: string;  
+}
+
+// 👇 Додаємо інтерфейс відповіді з пагінацією
+export interface PaginatedNotesResponse {
+  notes: Note[];
+  page: number;
+  totalPages: number;
+  totalResults: number;
 }
